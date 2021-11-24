@@ -1,0 +1,4 @@
+#########ZADANIE 1###########
+
+
+1. SELECT e.sektor, from etapy_wyprawy e INNER JOIN uczestnicy u ON e.idWyprawy = u.id_wyprawy
