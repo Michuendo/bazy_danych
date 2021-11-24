@@ -1,4 +1,5 @@
 #########ZADANIE 1###########
 
 
-1. SELECT e.sektor, from etapy_wyprawy e INNER JOIN uczestnicy u ON e.idWyprawy = u.id_wyprawy
+1. 
+select nazwa,idKreatury from kreatura WHERE idKreatury not in(SELECT distinct id_uczesnika from uczestnicy);
