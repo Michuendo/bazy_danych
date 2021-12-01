@@ -1,5 +1,109 @@
-#########ZADANIE 1###########
+/*##########ZADANIE 1###########*/
 
 
-1. 
-select nazwa,idKreatury from kreatura WHERE idKreatury not in(SELECT distinct id_uczesnika from uczestnicy);
+1.2 
+select nazwa,idKreatury from kreatura 
+WHERE idKreatury not in(SELECT distinct id_uczestnika from uczestnicy);
+↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+SELECT k.nazwa FROM kreatura k 
+left join uczestnicy u ON k.idKreatury=u.id_uczestnika
+WHERE u.id_uczestnika is NULL;
+
++----------+------------+
+| nazwa    | idKreatury |
++----------+------------+
+| Brutal   |          2 |
+| Defgard  |          5 |
+| Ara      |         12 |
+| Babajaga |        100 |
++----------+------------+
+
+1.3
+SELECT w.nazwa, sum(e.ilosc) from wyprawa w 
+inner join uczestnicy u on w.id_wyprawy=u.id_wyprawy
+inner join kreatura k on u.id_uczestnika=k.idKreatury
+inner join ekwipunek e on k.idKreatury=e.idKreatury
+group by w.nazwa;
+
++-----------------------+--------------+
+| nazwa                 | sum(e.ilosc) |
++-----------------------+--------------+
+| Poszukiwanie ziecia   |            5 |
+| Polowanie na tesciowa |           68 |
+| Nakarm kanibala       |           84 |
++-----------------------+--------------+
+
+/*##########ZADANIE 2###########*/
+
+2.1
+SELECT w.nazwa,COUNT(k.nazwa),GROUP_CONCAT(k.nazwa separator' | ') from wyprawa w 
+INNER JOIN uczestnicy u ON w.id_wyprawy = u.id_wyprawy
+INNER JOIN kreatura k ON u.id_uczestnika = k.idKreatury
+group by w.nazwa;
++-----------------------+----------------+------------------------------------------------------------------------+
+| nazwa                 | COUNT(k.nazwa) | GROUP_CONCAT(k.nazwa separator' | ')                                   |
++-----------------------+----------------+------------------------------------------------------------------------+
+| Nakarm kanibala       |              6 | Bjorn | Khorad | Astrid | Bjolkolur | Drozd | Dziadek                  |
+| Polowanie na tesciowa |              7 | Bjorn | Birgun | Ibra | Loko | Drozd | Szczeki | Dziadek               |
+| Poszukiwanie ziecia   |              5 | Nemo | Tesciowa | Tiki | sztuczna szczeka tesciowej | Tesciowa dziadka |
++-----------------------+----------------+------------------------------------------------------------------------+
+2.2
+SELECT w.data_rozpoczecia,ew.kolejnosc,s.nazwa,k.nazwa FROM etapy_wyprawy ew 
+INNER JOIN wyprawa w ON ew.idWyprawy=w.id_wyprawy 
+INNER JOIN sektor s ON ew.sektor=s.id_sektora
+INNER JOIN kreatura k ON w.kierownik = k.idKreatury
+ORDER BY w.data_rozpoczecia,ew.kolejnosc;
+
++------------------+-----------+--------------------+----------+
+| data_rozpoczecia | kolejnosc | nazwa              | nazwa    |
++------------------+-----------+--------------------+----------+
+| 1700-08-02       |         1 | Pieczara tesciowej | Tesciowa |
+| 1700-08-02       |         1 | Chatka dziadka     | Dziadek  |
+| 1700-08-02       |         2 | Wulkan             | Tesciowa |
+| 1700-08-02       |         2 | Pieczara tesciowej | Dziadek  |
+| 1700-08-02       |         3 | Wioska Kanibali    | Tesciowa |
+| 1700-08-02       |         3 | Zatoka rekinow     | Dziadek  |
+| 1700-08-02       |         4 | Pieprzne pole      | Tesciowa |
+| 1700-08-02       |         4 | Wulkan             | Dziadek  |
+| 1700-08-02       |         5 | Chatka dziadka     | Tesciowa |
+| 1700-08-02       |         5 | Wioska Kanibali    | Dziadek  |
+| 1700-08-04       |         1 | Kokosowa plaza     | Bjorn    |
+| 1700-08-04       |         2 | Chatka dziadka     | Bjorn    |
+| 1700-08-04       |         3 | Wulkan             | Bjorn    |
+| 1700-08-04       |         4 | Zatoka rekinow     | Bjorn    |
+| 1700-08-04       |         5 | Pieczara tesciowej | Bjorn    |
++------------------+-----------+--------------------+----------+
+
+/*##########ZADANIE 3###########*/
+
+3.1
+SELECT s.nazwa,count(ew.sektor) FROM sektor s 
+LEFT JOIN etapy_wyprawy ew ON ew.sektor=s.id_sektora
+group by s.nazwa with rollup;
+
++--------------------+------------------+
+| nazwa              | count(ew.sektor) |
++--------------------+------------------+
+| Chatka dziadka     |                3 |
+| Kokosowa plaza     |                1 |
+| Magiczna jaskinia  |                0 |
+| Pieczara tesciowej |                3 |
+| Pieprzne pole      |                1 |
+| Wioska Kanibali    |                2 |
+| Wulkan             |                3 |
+| Zabojcza skala     |                0 |
+| Zatoka rekinow     |                2 |
+| NULL               |               15 |
++--------------------+------------------+
+
+
+3.2 SELECT k.nazwa, IFNULL('Bral udzial w wyprawie', 'Nie brał udziału w wyprawie') FROM kreatura k
+left join uczestnicy u on k.idKreatury=u.id_uczestnika group by k.nazwa;
+
+/*##########ZADANIE 4###########*/
+SELECT idEtapu,idWyprawy,length(dziennik) FROM etapy_wyprawy;
+4.1
+
+
+4.2
