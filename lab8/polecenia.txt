@@ -1,0 +1,18 @@
+Zadania - część 2
+2.1
+SELECT p.imie,p.nazwisko,d.nazwa FROM pracownik p INNER JOIN dzial d ON d.id_dzialu = p.dzial;
+2.2
+SELECT t.nazwa_towaru, k.nazwa_kategori,s.ilosc FROM kategoria k 
+INNER JOIN towar t ON k.id_kategori = t.kategoria
+INNER JOIN stan_magazynowy s ON t.id_towaru = s.towar
+ORDER BY s.ilosc ASC;
+2.3
+SELECT z.data_zamowienia,s.nazwa_statusu_zamowienia FROM zamowienie z
+INNER JOIN status_zamowienia s ON s.id_statusu_zamowienia=z.status_zamowienia
+where s.nazwa_statusu_zamowienia="anulowane";
+2.4
+SELECT k.pelna_nazwa FROM klient k 
+INNER JOIN adres_klienta a ON k.id_klienta = a.klient
+WHERE a.miejscowosc LIKE "%olsztyn%";
+2.5
+select * from stan_magazynowy;
