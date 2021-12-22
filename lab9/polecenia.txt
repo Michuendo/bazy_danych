@@ -1,0 +1,33 @@
+Zadania czesc 1 
+
+1.1
+SELECT concat(imie," ",nazwisko) from pracownik;
+1.2
+SELECT concat(imie," ",nazwisko), year(CURDATE()) - year(data_urodzenia)from pracownik;
+1.3
+SELECT d.nazwa, count(id_pracownika) FROM dzial d 
+INNER JOIN pracownik p ON d.id_dzialu = p.dzial
+group by d.nazwa;
+1.4
+SELECT k.nazwa_kategori, sum(s.ilosc) FROM kategoria k 
+INNER JOIN towar t ON k.id_kategori = t.kategoria
+INNER JOIN stan_magazynowy s ON t.id_towaru = s.towar
+group by k.nazwa_kategori;
+1.5
+SELECT k.nazwa_kategori, group_concat(t.nazwa_towaru) FROM kategoria k 
+INNER JOIN towar t ON k.id_kategori = t.kategoria
+INNER JOIN stan_magazynowy s ON t.id_towaru = s.towar group by k.nazwa_kategori;
+1.6
+select round(avg(pensja),2) from pracownik;
+1.7
+select avg(pensja) from pracownik where year(curdate()) - year(data_zatrudnienia) >=5;
+1.8 
+SELECT t.nazwa_towaru, count(p.zamowienie) from pozycja_zamowienia p inner join towar t on p.towar=t.id_towaru group by t.nazwa_towaru order by count(p.zamowienie) desc limit 10;
+1.9 
+select z.numer_zamowienia, p.ilosc*p.cena from zamowienie z join pozycja_zamowienia p on z.id_zamowienia=p.zamowienie where z.data_zamowienia>=01-01-2017 or z.data_zamowienia<=03-31-2017;
+1.10
+SELECT p.imie,p.nazwisko,sum(po.ilosc*po.cena) from pracownik p inner join zamowienie z on z.pracownik_id_pracownika=p.id_pracownika inner join pozycja_zamowienia po on z.id_zamowienia=po.zamowienie group by p.id_pracownika order by sum(po.ilosc*po.cena) desc;
+
+
+19 stycznia kolos
+
