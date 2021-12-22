@@ -15,4 +15,23 @@ SELECT k.pelna_nazwa FROM klient k
 INNER JOIN adres_klienta a ON k.id_klienta = a.klient
 WHERE a.miejscowosc LIKE "%olsztyn%";
 2.5
-select * from stan_magazynowy;
+select j.nazwa from stan_magazynowy s
+right join jednostka_miary j on s.jm = j.id_jednostki
+where s.jm is null;
+2.6
+SELECT z.numer_zamowienia, t.nazwa_towaru,p.ilosc, t.cena_zakupu FROM zamowienie z
+INNER JOIN pozycja_zamowienia p on z.id_zamowienia = p.zamowienie
+INNER JOIN towar t ON p.towar = t.id_towaru
+where YEAR(z.data_zamowienia) =2018 ;
+2.7
+CREATE TABLE towary_full_info(nazwa_towaru,cena_zakupu, kategoria(nazwa),ilosc,jednostka_miary(nazwa));
+2.8
+SELECT p.id_pozycji,p.zamowienie, z.data_zamowienia FROM pozycja_zamowienia p
+INNER JOIN zamowienie z ON p.zamowienie = z.id_zamowienia
+ORDER BY z.data_zamowienia  ASC limit 5;
+2.9
+SELECT z.numer_zamowienia,s.nazwa_statusu_zamowienia FROM zamowienie z
+inner join status_zamowienia s ON z.status_zamowienia = s.id_statusu_zamowienia
+where s.nazwa_statusu_zamowienia != "zrealizowane";
+2.10
+SELECT * FROM adres_klienta where kod not regexp '[0-9]{2}-[0-9]{3}';
